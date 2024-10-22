@@ -1,4 +1,8 @@
 package com.example.pokedex
 
-class PokedexApplication {
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class PokedexApplication: Application() {
 }
