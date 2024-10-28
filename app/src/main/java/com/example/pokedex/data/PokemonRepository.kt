@@ -1,8 +1,9 @@
 package com.example.pokedex.data
 
+import kotlinx.coroutines.flow.StateFlow
+
 interface PokemonRepository {
-
-    suspend fun readAll(): String
-    suspend fun readOne(): String
-
+    val setStream: StateFlow<List<Pokemon>>
+    suspend fun readAll(): List<Pokemon>
+    suspend fun readOne(id: Int): Pokemon
 }
