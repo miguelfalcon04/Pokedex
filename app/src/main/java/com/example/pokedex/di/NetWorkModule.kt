@@ -1,11 +1,6 @@
 package com.example.pokedex.di
 
-import com.example.pokedex.data.DefaultPokemonRepository
-import com.example.pokedex.data.PokemonRepository
 import com.example.pokedex.data.remote.PokeApi
-import com.example.pokedex.data.remote.PokemonNetworkDataSource
-import com.example.pokedex.data.remote.PokemonRemoteDataSource
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,14 +26,3 @@ class NetWorkModule {
     }
 }
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule{
-    @Singleton
-    @Binds
-    abstract fun bindPokemonRepository(repository: DefaultPokemonRepository):PokemonRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindPokemonRemote(remote: PokemonNetworkDataSource):PokemonRemoteDataSource
-}

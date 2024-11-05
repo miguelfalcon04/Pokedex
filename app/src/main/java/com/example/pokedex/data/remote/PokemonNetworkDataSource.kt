@@ -1,6 +1,7 @@
 package com.example.pokedex.data.remote
 
 import com.example.pokedex.data.Pokemon
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,6 +19,10 @@ class PokemonNetworkDataSource
     override suspend fun readOne(id: Int): Response<Pokemon> {
         return pokeApi.readOne(id)
 
+    }
+
+    override suspend fun observeAll(): Flow<List<Pokemon>> {
+        TODO("Not yet implemented")
     }
 
 }

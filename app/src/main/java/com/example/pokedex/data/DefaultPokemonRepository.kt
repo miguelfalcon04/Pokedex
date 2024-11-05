@@ -1,9 +1,16 @@
 package com.example.pokedex.data
 
+import com.example.pokedex.data.local.PokemonLocalDataSource
 import com.example.pokedex.data.remote.PokemonRemoteDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,6 +18,7 @@ import javax.inject.Singleton
 class DefaultPokemonRepository
     @Inject constructor(
         private val remoteDataSource: PokemonRemoteDataSource,
+        private val localDataSource: PokemonLocalDataSource
     ):PokemonRepository
 {
     private val _state = MutableStateFlow<List<Pokemon>>(listOf())
@@ -40,7 +48,20 @@ class DefaultPokemonRepository
         else Pokemon(0,"")
     }
 
+    override fun observeAll(): Flow<List<Pokemon>> {
+        refreshLocal()
+        return localDataSource.observeAll()
+    }
+
     private fun idUrl(url: String):Int?{
         return url.trimEnd('/').substringAfterLast('/').toIntOrNull()
+    }
+
+    //TODO() pokemonRemote debe devolver List<Pokemon>
+    private fun refreshLocal(){
+        GlobalScope.launch(Dispatchers.IO) {
+            val pokemonRemote = remoteDataSource.readAll()
+            localDataSource.insert(pokemonRemote)
+        }
     }
 }
