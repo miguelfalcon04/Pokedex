@@ -61,7 +61,7 @@ class DefaultPokemonRepository
     private fun refreshLocal(){
         GlobalScope.launch(Dispatchers.IO) {
             val pokemonRemote = remoteDataSource.readAll()
-            localDataSource.insert(pokemonRemote)
+            // localDataSource.insert(pokemonRemote)
         }
     }
 }
